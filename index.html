@@ -4,7 +4,7 @@
     <title>Rich Text Editor | Preztyl</title>
     <link rel="stylesheet" href="index.css">
 </head>
-<body>
+<body onload="load()">
     <!-- The toolbar containing buttons -->
     <div id="toolbar">
         <!-- Button for making text bold -->
@@ -22,9 +22,9 @@
         <!-- Button for decreasing font size -->
         <button id="decrease-font-size-button">A-</button>
         <!-- Button for Saving text -->
-        <button onclick="save()">Export</button>
+        <button id="save-button">Save</button>
         <!-- Button for Saving text -->
-        <button onclick="triggerFileInput()">Import</button>
+        <button id="load-button">Load</button>
         <input type="file" id="fileInput" class="file-input" accept=".pxt" style="display: none;" onchange="handleFileSelection(event)" />
     </div>
 

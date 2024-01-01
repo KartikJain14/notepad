@@ -5,7 +5,32 @@ const strikethroughButton = document.getElementById("strikethrough-button");
 const colorPicker = document.getElementById("color-picker");
 const increaseFontSizeButton = document.getElementById("increase-font-size-button");
 const decreaseFontSizeButton = document.getElementById("decrease-font-size-button");
+const saveButton = document.getElementById("save-button");
+const loadButton = document.getElementById("load-button")
 const editor = document.getElementById("editor");
+const key = "PrEzTyL!";
+
+
+function load(){
+    try{
+        const encDataText = localStorage.getItem("dataText");
+        const decDataText = decrypt(encDataText, key);
+        editor.innerHTML = decDataText;
+    } catch(e) {}
+}
+
+function exit(){
+    const textData = editor.innerHTML;
+    const encTextData = encrypt(textData, key);
+    localStorage.setItem("dataText", encTextData)
+}
+
+const intervalId = setInterval(exit, 1000);
+
+window.onbeforeunload = confirmExit;
+function confirmExit() {
+    exit();
+}
 
 function formatText(command) {
     document.execCommand(command, false, null);
@@ -25,6 +50,8 @@ boldButton.addEventListener("click", () => formatText("bold"));
 italicButton.addEventListener("click", () => formatText("italic"));
 underlineButton.addEventListener("click", () => formatText("underline"));
 strikethroughButton.addEventListener("click", () => formatText("strikethrough"));
+saveButton.addEventListener("click", () => save());
+loadButton.addEventListener("click", () => triggerFileInput());
 
 colorPicker.addEventListener("input", function () {
     const color = colorPicker.value;
@@ -38,8 +65,8 @@ decreaseFontSizeButton.addEventListener("click", () => changeLineFontSize(1));
 
 function save(){
     const content = document.getElementById('editor').innerHTML;
-    const key = "PrEzTyL!";
     const enc = encrypt(content, key);
+    localStorage.setItem("dataText",enc);
     const link = document.createElement("a");
     const file = new Blob([enc], { type: 'text/plain' });
     link.href = URL.createObjectURL(file);
@@ -52,7 +79,6 @@ function saved() {
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
     const reader = new FileReader();
-    const key = "PrEzTyL!";
     reader.onload = function (e) {
         const content = e.target.result;
         const dec = decrypt(content, key);
