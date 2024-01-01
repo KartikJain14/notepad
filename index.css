@@ -1,4 +1,3 @@
-/* Global styles for the entire page */
 body {
     font-family: Arial, sans-serif;
     background-color: #333;
@@ -10,23 +9,21 @@ body {
     min-height: 100vh;
 }
 
-/* Styles for the toolbar at the top of the page */
 #toolbar {
     background-color: #222;
     color: white;
     display: flex;
-    justify-content: center; /* Center the toolbar items */
+    justify-content: center; 
     align-items: center;
     padding: 0.5rem 1rem;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid #111;
-    position: fixed; /* Fixed toolbar at the top */
+    position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1; /* Ensure it's above other content */
+    z-index: 1; 
 }
 
-/* Styles for toolbar buttons */
 #toolbar button {
     background-color: #111;
     color: white;
@@ -38,13 +35,12 @@ body {
     transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Hover effect for toolbar buttons */
+
 #toolbar button:hover {
     background-color: #222;
     transform: scale(1.1);
 }
 
-/* Styles for the text editor */
 #editor {
     flex: 1;
     padding: 1rem;
@@ -53,7 +49,7 @@ body {
     font-size: 1rem;
     resize: none;
     min-height: 3rem;
-    margin-top: 20px; /* Adjust for the fixed toolbar */
+    margin-top: 20px;
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
@@ -61,7 +57,6 @@ body {
     color: white;
 }
 
-/* Styles for the color picker input */
 #color-picker {
     border: none;
     margin: 1rem;

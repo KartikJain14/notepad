@@ -6,7 +6,8 @@ const colorPicker = document.getElementById("color-picker");
 const increaseFontSizeButton = document.getElementById("increase-font-size-button");
 const decreaseFontSizeButton = document.getElementById("decrease-font-size-button");
 const saveButton = document.getElementById("save-button");
-const loadButton = document.getElementById("load-button")
+const loadButton = document.getElementById("load-button");
+const clearButton = document.getElementById("clear-button");
 const editor = document.getElementById("editor");
 const key = "PrEzTyL!";
 
@@ -15,6 +16,7 @@ function load(){
     try{
         const encDataText = localStorage.getItem("dataText");
         const decDataText = decrypt(encDataText, key);
+        if(encDataText == ''){console.log("work"); decDataText = '\n        Start typing here...\n    ';}
         editor.innerHTML = decDataText;
     } catch(e) {}
 }
@@ -23,6 +25,13 @@ function exit(){
     const textData = editor.innerHTML;
     const encTextData = encrypt(textData, key);
     localStorage.setItem("dataText", encTextData)
+}
+
+function clear(){
+    localStorage.removeItem("dataText");
+    editor.innerHTML='\n        Start typing here...\n    ';
+    exit();
+    location.reload();
 }
 
 const intervalId = setInterval(exit, 1000);
@@ -52,6 +61,7 @@ underlineButton.addEventListener("click", () => formatText("underline"));
 strikethroughButton.addEventListener("click", () => formatText("strikethrough"));
 saveButton.addEventListener("click", () => save());
 loadButton.addEventListener("click", () => triggerFileInput());
+clearButton.addEventListener("click", () => clear());
 
 colorPicker.addEventListener("input", function () {
     const color = colorPicker.value;
@@ -121,7 +131,7 @@ function handleFileSelection(event) {
 
 function removeHolder(){
     content = document.getElementById('editor').innerHTML;
-    if(content.includes("Start typing here...")){
+    if(content.startsWith('\n        Start typing here...\n    ')){
         document.getElementById('editor').innerHTML = "";
     }
 }
