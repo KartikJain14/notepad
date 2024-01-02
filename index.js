@@ -8,6 +8,7 @@ const decreaseFontSizeButton = document.getElementById("decrease-font-size-butto
 const saveButton = document.getElementById("save-button");
 const loadButton = document.getElementById("load-button");
 const clearButton = document.getElementById("clear-button");
+const clearConfirmButton = document.getElementById("clear-confirm-button")
 const editor = document.getElementById("editor");
 const key = "PrEzTyL!";
 
@@ -28,6 +29,11 @@ function exit(){
 }
 
 function clear(){
+    clearButton.hidden = true;
+    clearConfirmButton.hidden = false;
+}
+
+function confirmClear(){
     localStorage.removeItem("dataText");
     editor.innerHTML='\n        Start typing here...\n    ';
     exit();
@@ -62,6 +68,7 @@ strikethroughButton.addEventListener("click", () => formatText("strikethrough"))
 saveButton.addEventListener("click", () => save());
 loadButton.addEventListener("click", () => triggerFileInput());
 clearButton.addEventListener("click", () => clear());
+clearConfirmButton.addEventListener("click", () => confirmClear());
 
 colorPicker.addEventListener("input", function () {
     const color = colorPicker.value;
