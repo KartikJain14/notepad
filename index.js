@@ -14,18 +14,25 @@ const key = "PrEzTyL!";
 
 
 function load(){
+    console.log("If you know why you are here, contact admin@preztyl.tech");
     try{
         const encDataText = localStorage.getItem("dataText");
         const decDataText = decrypt(encDataText, key);
         if(encDataText == ''){console.log("work"); decDataText = '\n        Start typing here...\n    ';}
         editor.innerHTML = decDataText;
-    } catch(e) {}
+    } catch(e) {
+        console.log("No previous session data found!");
+    }
 }
 
 function exit(){
-    const textData = editor.innerHTML;
-    const encTextData = encrypt(textData, key);
-    localStorage.setItem("dataText", encTextData)
+    try{
+        const textData = editor.innerHTML;
+        const encTextData = encrypt(textData, key);
+        localStorage.setItem("dataText", encTextData)
+    }catch(e){
+        console.log("Failed to save data in local storage");
+    }
 }
 
 function clear(){
@@ -81,9 +88,13 @@ increaseFontSizeButton.addEventListener("click", () => changeLineFontSize(1.5));
 decreaseFontSizeButton.addEventListener("click", () => changeLineFontSize(1));
 
 function save(){
+    try{
     const content = document.getElementById('editor').innerHTML;
     const enc = encrypt(content, key);
-    localStorage.setItem("dataText",enc);
+        localStorage.setItem("dataText",enc);
+    } catch(e){
+        console.log("Failed to save the data in localstorage.");
+    }
     const link = document.createElement("a");
     const file = new Blob([enc], { type: 'text/plain' });
     link.href = URL.createObjectURL(file);
