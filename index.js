@@ -10,22 +10,38 @@ const loadButton = document.getElementById("load-button");
 const clearButton = document.getElementById("clear-button");
 const clearConfirmButton = document.getElementById("clear-confirm-button")
 const editor = document.getElementById("editor");
-const key = "PrEzTyL!";
 
+function encrypt(text, key){
+    return [...text].map((x, i) => 
+    (x.codePointAt() ^ key.charCodeAt(i % key.length) % 255)
+     .toString(16)
+     .padStart(2,"0")
+   ).join('')
+}
+function decrypt(text, key){
+    return String.fromCharCode(...text.match(/.{1,2}/g)
+     .map((e,i) => 
+       parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
+     )
+}
 
 function load(){
+    const key = "PrEzTyL!";
     console.log("If you know why you are here, contact admin@preztyl.tech");
     try{
         const encDataText = localStorage.getItem("dataText");
         const decDataText = decrypt(encDataText, key);
-        if(encDataText == ''){console.log("work"); decDataText = '\n        Start typing here...\n    ';}
-        editor.innerHTML = decDataText;
-    } catch(e) {
+        if(encDataText !== ''){
+            console.log("Loaded previous session data!");
+            decDataText = '\n        Start typing here...\n    ';
+            editor.innerHTML = decDataText;
+        }catch(e){
         console.log("No previous session data found!");
     }
 }
 
 function exit(){
+    const key = "PrEzTyL!";
     try{
         const textData = editor.innerHTML;
         const encTextData = encrypt(textData, key);
@@ -88,9 +104,10 @@ increaseFontSizeButton.addEventListener("click", () => changeLineFontSize(1.5));
 decreaseFontSizeButton.addEventListener("click", () => changeLineFontSize(1));
 
 function save(){
+    const key = "PrEzTyL!";
     try{
-    const content = document.getElementById('editor').innerHTML;
-    const enc = encrypt(content, key);
+        const content = document.getElementById('editor').innerHTML;
+        const enc = encrypt(content, key);
         localStorage.setItem("dataText",enc);
     } catch(e){
         console.log("Failed to save the data in localstorage.");
@@ -104,6 +121,7 @@ function save(){
 }
 
 function saved() {
+    const key = "PrEzTyL!";
     const fileInput = document.getElementById('fileInput');
     const file = fileInput.files[0];
     const reader = new FileReader();
@@ -115,20 +133,6 @@ function saved() {
         fileInput.value = "";
     };
     reader.readAsText(file);
-}
-
-function encrypt(text, key){
-    return [...text].map((x, i) => 
-    (x.codePointAt() ^ key.charCodeAt(i % key.length) % 255)
-     .toString(16)
-     .padStart(2,"0")
-   ).join('')
-}
-function decrypt(text, key){
-    return String.fromCharCode(...text.match(/.{1,2}/g)
-     .map((e,i) => 
-       parseInt(e, 16) ^ key.charCodeAt(i % key.length) % 255)
-     )
 }
 
 function triggerFileInput() {
