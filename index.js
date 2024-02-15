@@ -12,7 +12,18 @@ const clearConfirmButton = document.getElementById("clear-confirm-button")
 const editor = document.getElementById("editor");
 const key = "PrEzTyL!";
 
-@@ -28,6 +29,11 @@ function exit(){
+function load(){
+    try{
+        const encDataText = localStorage.getItem("dataText");
+        const decDataText = decrypt(encDataText, key);
+        if(encDataText == ''){console.log("work"); decDataText = '\n        Start typing here...\n    ';}
+        editor.innerHTML = decDataText;
+    } catch(e) {}
+}
+function exit(){
+    const textData = editor.innerHTML;
+    const encTextData = encrypt(textData, key);
+    localStorage.setItem("dataText", encTextData)
 }
 
 function clear(){
@@ -24,7 +35,29 @@ function confirmClear(){
     localStorage.removeItem("dataText");
     editor.innerHTML='\n        Start typing here...\n    ';
     exit();
-@@ -62,6 +68,7 @@ strikethroughButton.addEventListener("click", () => formatText("strikethrough"))
+    location.reload();
+}
+const intervalId = setInterval(exit, 1000);
+window.onbeforeunload = confirmExit;
+function confirmExit() {
+    exit();
+}
+function formatText(command) {
+    document.execCommand(command, false, null);
+}
+function changeLineFontSize(size) {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const startNode = range.startContainer;
+    if (startNode.nodeType === Node.TEXT_NODE) {
+        const line = startNode.parentNode;
+        line.style.fontSize = size + "rem";
+    }
+}
+boldButton.addEventListener("click", () => formatText("bold"));
+italicButton.addEventListener("click", () => formatText("italic"));
+underlineButton.addEventListener("click", () => formatText("underline"));
+strikethroughButton.addEventListener("click", () => formatText("strikethrough"));
 saveButton.addEventListener("click", () => save());
 loadButton.addEventListener("click", () => triggerFileInput());
 clearButton.addEventListener("click", () => clear());
