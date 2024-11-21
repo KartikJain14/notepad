@@ -128,11 +128,19 @@ function handleFileSelection(event) {
     fileInput.value = '';
 }
 
+function removeHolder(){
+    if(editor.innerHTML.includes("""
+        Start typing here...
+    """))
+    {
+        editor.innerHTML="";
+    }
+}
+
 document.addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key === 's') {
         event.preventDefault();
         save();
     }
 });
-
 load();
