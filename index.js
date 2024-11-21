@@ -129,9 +129,7 @@ function handleFileSelection(event) {
 }
 
 function removeHolder(){
-    if(editor.innerHTML.includes("""
-        Start typing here...
-    """))
+    if(editor.innerHTML.includes("Start typing here..."))
     {
         editor.innerHTML="";
     }
